@@ -45,5 +45,5 @@ DB Browser for SQLite(https://sqlitebrowser.org/dl/)
 
 ## Autor
 __Joseph Gabino Rodriguez__ - [josephgabino](
-    alu0101329161@ull.edu.es
+    alu0101329161@ull.edu.es)
 
