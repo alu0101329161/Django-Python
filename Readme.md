@@ -43,6 +43,9 @@ python manage.py runserver [3000]
 ##  Views Database
 DB Browser for SQLite(https://sqlitebrowser.org/dl/)
 
+![image](https://user-images.githubusercontent.com/72351056/190878021-2d1b892a-1f0e-4e18-b0fc-c0bd7991fbf1.png)
+
+
 ## Autor
 __Joseph Gabino Rodriguez__ - [josephgabino](
     alu0101329161@ull.edu.es)
