@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from .forms import CreateNewTask, CreateNewProject
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -19,9 +21,13 @@ def login(request):
             try:
                 user = User.objects.create_user(
                     request.POST['username'], password=request.POST['password1'])
+                # Save in database
                 user.save()
-                return HttpResponse('Passwords correct')
-            except:
+                # Create a cookie for the user(session_id)
+                print(user)
+                login(request, user)
+                return redirect(tasks)
+            except IntegrityError:
                 return render(request, 'login.html', {
                     'form': UserCreationForm(),
                     'error': 'Username already taken'
@@ -31,7 +37,29 @@ def login(request):
                 'form': UserCreationForm(),
                 'error': 'Passwords must match'
             })
-            
+
+
+def signout(request):
+    logout(request)
+    return redirect(index)
+
+def signin(request):
+    if (request.method == 'GET'):
+        return render(request, 'login.html', {
+            'form': UserCreationForm()
+        })
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'login.html', {
+                'form': UserCreationForm(),
+                'error': 'Username and password did not match'
+            })
+        else:
+            login(request, user)
+            return redirect(tasks)
+
+
 
 def index(request):
     title = 'Welcome to my app'

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joseph App</title>
     <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    
 </head>
 <body>
     <nav class="navbar container">
@@ -17,6 +18,11 @@
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'create_task' %}">Create task</a></li>
             <li><a href="{% url 'create_project' %}">Create project</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
         </ul>
     </nav>
     
