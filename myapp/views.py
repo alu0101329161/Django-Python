@@ -3,9 +3,35 @@ from django.http import HttpResponse
 from .models import Project, Task
 from django.shortcuts import get_object_or_404
 from .forms import CreateNewTask, CreateNewProject
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 
+
+def login(request):
+    if (request.method == 'GET'):
+        return render(request, 'login.html', {
+            'form': UserCreationForm()
+        })
+    else:
+        if (request.POST['password1'] == request.POST['password2']):
+            try:
+                user = User.objects.create_user(
+                    request.POST['username'], password=request.POST['password1'])
+                user.save()
+                return HttpResponse('Passwords correct')
+            except:
+                return render(request, 'login.html', {
+                    'form': UserCreationForm(),
+                    'error': 'Username already taken'
+                })
+        else:
+            return render(request, 'login.html', {
+                'form': UserCreationForm(),
+                'error': 'Passwords must match'
+            })
+            
 
 def index(request):
     title = 'Welcome to my app'
@@ -61,7 +87,7 @@ def create_project(request):
 def project_detail(request, id):
     project = get_object_or_404(Project, id=id)
     tasks = Task.objects.filter(project_id=id)
-    return render(request, 'projects/detail.html',{
+    return render(request, 'projects/detail.html', {
         'project': project,
         'tasks': tasks
     })
